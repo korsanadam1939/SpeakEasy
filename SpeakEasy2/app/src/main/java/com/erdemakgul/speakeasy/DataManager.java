@@ -48,27 +48,50 @@ public class DataManager {
 
         return result;
     }
-    public int iddondur(String word) {
+    public int iddondur(String word,int a) {
         int result = -1; // Varsayılan döndürme değeri (bulunamadı)
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        // SQL sorgusu: firstword sütununda verilen 'word' değeri ile eşleşen id'yi getirir
-        Cursor cursor = db.rawQuery("SELECT id FROM kelimeler WHERE firstword = ?", new String[]{word});
+        if(a==1){
+            // SQL sorgusu: firstword sütununda verilen 'word' değeri ile eşleşen id'yi getirir
+            Cursor cursor = db.rawQuery("SELECT id FROM kelimeler WHERE firstword = ?", new String[]{word});
 
-        if (cursor != null && cursor.moveToFirst()) {
-            int idIx = cursor.getColumnIndex("id");
-            // 'id' kolonundan değer al
-            result = cursor.getInt(idIx);
+            if (cursor != null && cursor.moveToFirst()) {
+                int idIx = cursor.getColumnIndex("id");
+                // 'id' kolonundan değer al
+                result = cursor.getInt(idIx);
+            }
+
+            // Cursor ve database bağlantısını kapat
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+
+            return result;
+        }
+        else {
+            // SQL sorgusu: firstword sütununda verilen 'word' değeri ile eşleşen id'yi getirir
+            Cursor cursor = db.rawQuery("SELECT id FROM kelimeler WHERE secondword = ?", new String[]{word});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int idIx = cursor.getColumnIndex("id");
+                // 'id' kolonundan değer al
+                result = cursor.getInt(idIx);
+            }
+
+            // Cursor ve database bağlantısını kapat
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+
+            return result;
+
         }
 
-        // Cursor ve database bağlantısını kapat
-        if (cursor != null) {
-            cursor.close();
-        }
-        db.close();
 
-        return result;
     }
 
     public void listeyeekle(){

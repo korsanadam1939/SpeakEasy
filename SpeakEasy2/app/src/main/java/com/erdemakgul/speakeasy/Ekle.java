@@ -76,7 +76,7 @@ public class Ekle extends AppCompatActivity {
             dataManager.addEntry(firstWord, secondWord);
 
 
-            int idvalue=dataManager.iddondur(firstWord);
+            int idvalue=dataManager.iddondur(firstWord,1);
 
             System.out.println(numbers);
             dataManager.printEntries(idvalue);

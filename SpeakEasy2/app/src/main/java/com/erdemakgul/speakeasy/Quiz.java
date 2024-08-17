@@ -1,6 +1,7 @@
 package com.erdemakgul.speakeasy;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -75,14 +77,42 @@ public class Quiz extends AppCompatActivity {
 
     }
     public void bildim(View view){
+        // ImageView nesnesini al
 
-        String metin = textView.getText().toString();
-        int id=dataManager.iddondur(metin);
-        dataManager.deleteEntry(id);
-        Ekle.numbers.removeAll(Collections.singleton(id));
-        kelimeayarla();
-        myImageView.setClickable(true);
-        renkyesil();
+
+// Görselin kaynak id'sini kontrol etmek için
+        int expectedDrawableId = R.drawable.quizz; // Kontrol etmek istediğiniz görselin id'si
+        Drawable currentDrawable = myImageView.getDrawable();
+
+        if (currentDrawable != null && currentDrawable.getConstantState() != null) {
+            Drawable expectedDrawable = ContextCompat.getDrawable(this, expectedDrawableId);
+
+            if (expectedDrawable != null && expectedDrawable.getConstantState() != null &&
+                    currentDrawable.getConstantState().equals(expectedDrawable.getConstantState())) {
+                System.out.println("sarı");
+                String metin = textView.getText().toString();
+                int id=dataManager.iddondur(metin,2);
+                dataManager.deleteEntry(id);
+                Ekle.numbers.removeAll(Collections.singleton(id));
+                kelimeayarla();
+                myImageView.setClickable(true);
+                renkyesil();
+
+
+            } else {
+
+                String metin = textView.getText().toString();
+                int id=dataManager.iddondur(metin,1);
+                dataManager.deleteEntry(id);
+                Ekle.numbers.removeAll(Collections.singleton(id));
+                kelimeayarla();
+                myImageView.setClickable(true);
+                renkyesil();            }
+        } else {
+            System.out.println("görsel yok");
+        }
+
+
 
     }
     public void bilemedim(View view){
